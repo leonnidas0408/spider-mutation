@@ -410,6 +410,7 @@ class PlayerController {
       // As poses são texturas de um único frame. setTexture evita que o Phaser
       // mantenha o frame visual anterior ao entrar no balanço.
       this.sprite.setTexture(chave);
+      this.sprite.setScale(1);
       this.sprite.anims.play(chave, true);
       this._ultimaPoseAnimacao = pose;
     }
