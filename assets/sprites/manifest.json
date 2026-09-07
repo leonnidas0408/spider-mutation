@@ -1,0 +1,367 @@
+{
+  "source": "sprite sheets gerados para Quimera-Ω",
+  "frame_width": 320,
+  "frame_height": 1440,
+  "characters": {
+    "protagonista": {
+      "source": "protagonista_sprites.png",
+      "frames": [
+        {
+          "index": 0,
+          "animation": "idle",
+          "file": "protagonista/00_idle.png"
+        },
+        {
+          "index": 1,
+          "animation": "caminhada",
+          "file": "protagonista/01_caminhada.png"
+        },
+        {
+          "index": 2,
+          "animation": "corrida",
+          "file": "protagonista/02_corrida.png"
+        },
+        {
+          "index": 3,
+          "animation": "aderencia_parede",
+          "file": "protagonista/03_aderencia_parede.png"
+        },
+        {
+          "index": 4,
+          "animation": "balanco_teia",
+          "file": "protagonista/04_balanco_teia.png"
+        },
+        {
+          "index": 5,
+          "animation": "ataque_teia_comum",
+          "file": "protagonista/05_ataque_teia_comum.png"
+        },
+        {
+          "index": 6,
+          "animation": "ataque_teia_eletrica",
+          "file": "protagonista/06_ataque_teia_eletrica.png"
+        },
+        {
+          "index": 7,
+          "animation": "regeneracao",
+          "file": "protagonista/07_regeneracao.png"
+        }
+      ]
+    },
+    "aranha_quimera": {
+      "source": "aranha_quimera_sprites.png",
+      "frames": [
+        {
+          "index": 0,
+          "animation": "idle",
+          "file": "aranha_quimera/00_idle.png"
+        },
+        {
+          "index": 1,
+          "animation": "rastejo",
+          "file": "aranha_quimera/01_rastejo.png"
+        },
+        {
+          "index": 2,
+          "animation": "alerta_territorial",
+          "file": "aranha_quimera/02_alerta_territorial.png"
+        },
+        {
+          "index": 3,
+          "animation": "movimento_rapido",
+          "file": "aranha_quimera/03_movimento_rapido.png"
+        },
+        {
+          "index": 4,
+          "animation": "salto",
+          "file": "aranha_quimera/04_salto.png"
+        },
+        {
+          "index": 5,
+          "animation": "mordida",
+          "file": "aranha_quimera/05_mordida.png"
+        },
+        {
+          "index": 6,
+          "animation": "veneno_mutagenico",
+          "file": "aranha_quimera/06_veneno_mutagenico.png"
+        },
+        {
+          "index": 7,
+          "animation": "morte",
+          "file": "aranha_quimera/07_morte.png"
+        }
+      ]
+    },
+    "toupeira_gigante": {
+      "source": "toupeira_gigante_sprites.png",
+      "frames": [
+        {
+          "index": 0,
+          "animation": "idle",
+          "file": "toupeira_gigante/00_idle.png"
+        },
+        {
+          "index": 1,
+          "animation": "caminhada",
+          "file": "toupeira_gigante/01_caminhada.png"
+        },
+        {
+          "index": 2,
+          "animation": "escavacao_rapida",
+          "file": "toupeira_gigante/02_escavacao_rapida.png"
+        },
+        {
+          "index": 3,
+          "animation": "emergencia_solo",
+          "file": "toupeira_gigante/03_emergencia_solo.png"
+        },
+        {
+          "index": 4,
+          "animation": "ataque_terra",
+          "file": "toupeira_gigante/04_ataque_terra.png"
+        },
+        {
+          "index": 5,
+          "animation": "golpe_garra",
+          "file": "toupeira_gigante/05_golpe_garra.png"
+        },
+        {
+          "index": 6,
+          "animation": "dano_desequilibrio",
+          "file": "toupeira_gigante/06_dano_desequilibrio.png"
+        },
+        {
+          "index": 7,
+          "animation": "morte",
+          "file": "toupeira_gigante/07_morte.png"
+        }
+      ]
+    },
+    "homem_onca": {
+      "source": "homem_onca_sprites.png",
+      "frames": [
+        {
+          "index": 0,
+          "animation": "postura_territorial",
+          "file": "homem_onca/00_postura_territorial.png"
+        },
+        {
+          "index": 1,
+          "animation": "perseguicao",
+          "file": "homem_onca/01_perseguicao.png"
+        },
+        {
+          "index": 2,
+          "animation": "corrida",
+          "file": "homem_onca/02_corrida.png"
+        },
+        {
+          "index": 3,
+          "animation": "salto_agachado",
+          "file": "homem_onca/03_salto_agachado.png"
+        },
+        {
+          "index": 4,
+          "animation": "ataque_garras",
+          "file": "homem_onca/04_ataque_garras.png"
+        },
+        {
+          "index": 5,
+          "animation": "rugido",
+          "file": "homem_onca/05_rugido.png"
+        },
+        {
+          "index": 6,
+          "animation": "dano_humano",
+          "file": "homem_onca/06_dano_humano.png"
+        },
+        {
+          "index": 7,
+          "animation": "morte",
+          "file": "homem_onca/07_morte.png"
+        }
+      ]
+    },
+    "fazendeiro": {
+      "source": "fazendeiro_sprites.png",
+      "frames": [
+        {
+          "index": 0,
+          "animation": "idle_espingarda",
+          "file": "fazendeiro/00_idle_espingarda.png"
+        },
+        {
+          "index": 1,
+          "animation": "caminhada_lanterna",
+          "file": "fazendeiro/01_caminhada_lanterna.png"
+        },
+        {
+          "index": 2,
+          "animation": "ataque_garfo",
+          "file": "fazendeiro/02_ataque_garfo.png"
+        },
+        {
+          "index": 3,
+          "animation": "disparo",
+          "file": "fazendeiro/03_disparo.png"
+        },
+        {
+          "index": 4,
+          "animation": "ataque_corda",
+          "file": "fazendeiro/04_ataque_corda.png"
+        },
+        {
+          "index": 5,
+          "animation": "investida",
+          "file": "fazendeiro/05_investida.png"
+        },
+        {
+          "index": 6,
+          "animation": "dano_regeneracao",
+          "file": "fazendeiro/06_dano_regeneracao.png"
+        },
+        {
+          "index": 7,
+          "animation": "morte",
+          "file": "fazendeiro/07_morte.png"
+        }
+      ]
+    },
+    "caes_mutantes": {
+      "source": "caes_mutantes_sprites.png",
+      "frames": [
+        {
+          "index": 0,
+          "animation": "idle",
+          "file": "caes_mutantes/00_idle.png"
+        },
+        {
+          "index": 1,
+          "animation": "farejo",
+          "file": "caes_mutantes/01_farejo.png"
+        },
+        {
+          "index": 2,
+          "animation": "corrida",
+          "file": "caes_mutantes/02_corrida.png"
+        },
+        {
+          "index": 3,
+          "animation": "ataque_grupo",
+          "file": "caes_mutantes/03_ataque_grupo.png"
+        },
+        {
+          "index": 4,
+          "animation": "salto_mordida",
+          "file": "caes_mutantes/04_salto_mordida.png"
+        },
+        {
+          "index": 5,
+          "animation": "rosnado_alerta",
+          "file": "caes_mutantes/05_rosnado_alerta.png"
+        },
+        {
+          "index": 6,
+          "animation": "preso_teia_prisao",
+          "file": "caes_mutantes/06_preso_teia_prisao.png"
+        },
+        {
+          "index": 7,
+          "animation": "morte",
+          "file": "caes_mutantes/07_morte.png"
+        }
+      ]
+    },
+    "trex_mutante": {
+      "source": "trex_mutante_sprites.png",
+      "frames": [
+        {
+          "index": 0,
+          "animation": "idle_respiracao",
+          "file": "trex_mutante/00_idle_respiracao.png"
+        },
+        {
+          "index": 1,
+          "animation": "caminhada",
+          "file": "trex_mutante/01_caminhada.png"
+        },
+        {
+          "index": 2,
+          "animation": "corrida",
+          "file": "trex_mutante/02_corrida.png"
+        },
+        {
+          "index": 3,
+          "animation": "rugido",
+          "file": "trex_mutante/03_rugido.png"
+        },
+        {
+          "index": 4,
+          "animation": "mordida",
+          "file": "trex_mutante/04_mordida.png"
+        },
+        {
+          "index": 5,
+          "animation": "golpe_cauda",
+          "file": "trex_mutante/05_golpe_cauda.png"
+        },
+        {
+          "index": 6,
+          "animation": "interrupcao_eletrica",
+          "file": "trex_mutante/06_interrupcao_eletrica.png"
+        },
+        {
+          "index": 7,
+          "animation": "morte",
+          "file": "trex_mutante/07_morte.png"
+        }
+      ]
+    },
+    "monstro_acido": {
+      "source": "monstro_acido_sprites.png",
+      "frames": [
+        {
+          "index": 0,
+          "animation": "idle_pulsacao",
+          "file": "monstro_acido/00_idle_pulsacao.png"
+        },
+        {
+          "index": 1,
+          "animation": "passagem_fresta",
+          "file": "monstro_acido/01_passagem_fresta.png"
+        },
+        {
+          "index": 2,
+          "animation": "poca_acida",
+          "file": "monstro_acido/02_poca_acida.png"
+        },
+        {
+          "index": 3,
+          "animation": "ataque_tentaculo",
+          "file": "monstro_acido/03_ataque_tentaculo.png"
+        },
+        {
+          "index": 4,
+          "animation": "jorro_corrosivo",
+          "file": "monstro_acido/04_jorro_corrosivo.png"
+        },
+        {
+          "index": 5,
+          "animation": "divisao_massas",
+          "file": "monstro_acido/05_divisao_massas.png"
+        },
+        {
+          "index": 6,
+          "animation": "dano_regeneracao",
+          "file": "monstro_acido/06_dano_regeneracao.png"
+        },
+        {
+          "index": 7,
+          "animation": "colapso_residuo",
+          "file": "monstro_acido/07_colapso_residuo.png"
+        }
+      ]
+    }
+  }
+}

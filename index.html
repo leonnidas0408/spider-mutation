@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Quimera-Ω — Demo do Player Controller</title>
+<style>
+  html, body { margin: 0; background: #0b0e14; }
+  #ui {
+    position: absolute; top: 8px; left: 8px; color: #e8e8e8;
+    font: 13px/1.4 monospace; background: rgba(0,0,0,0.45);
+    padding: 10px 14px; border-radius: 6px; max-width: 380px;
+  }
+  #ui b { color: #7fd1ff; }
+</style>
+</head>
+<body>
+
+<div id="ui">
+  <b>Quimera-Ω — demo de movimento/colisão/teia</b><br/>
+  ← → ou A/D: andar &nbsp; | &nbsp; SHIFT: correr &nbsp; | &nbsp; ESPAÇO: pular<br/>
+  Encoste numa parede e segure na direção dela + pule: pulo na parede<br/>
+  E ou clique esquerdo (no ar): atirar teia no ponto amarelo mais próximo<br/>
+  W/↑ e S/↓ enquanto balança: encurta/alonga a corda<br/>
+  <span id="estado">estado: —</span>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.70.0/phaser.min.js"></script>
+<script src="./src/game-data.js"></script>
+<script src="./src/animations.js"></script>
+<script src="./src/web-swing.js"></script>
+<script src="./src/player-controller.js"></script>
+<script>
+"use strict";
+
+const LARGURA = 1000;
+const ALTURA = 600;
+const GRAVIDADE = 900;
+
+class CenaDemo extends Phaser.Scene {
+  preload() {
+    // sprites reais do protagonista (ver assets/sprites/manifest.json)
+    QUIMERA_precarregarSpritesPersonagem(this, "protagonista");
+
+    // placeholders só pro cenário de teste — ainda não temos tileset das
+    // regiões (esgotos, floresta etc.), só os personagens/criaturas
+    const g = this.make.graphics({ x: 0, y: 0, add: false });
+    g.fillStyle(0x394152, 1).fillRect(0, 0, 64, 32);
+    g.generateTexture("plataforma", 64, 32);
+    g.clear();
+
+    g.fillStyle(0x4a5468, 1).fillRect(0, 0, 32, 64);
+    g.generateTexture("parede", 32, 64);
+    g.clear();
+
+    g.fillStyle(0xffd166, 1).fillCircle(6, 6, 6);
+    g.generateTexture("ancora", 12, 12);
+  }
+
+  create() {
+    this.physics.world.gravity.y = GRAVIDADE;
+
+    // --- Progressão: inicia a campanha (concede sentido-aracnídeo, força e
+    // agilidade, aderência e teia comum — os poderes do Ato I) ---
+    this.gerenciadorProgressao = new QUIMERA.GerenciadorProgressao();
+    this.gerenciadorProgressao.iniciarCampanha();
+
+    // --- Cenário de teste ---
+    this.plataformas = this.physics.add.staticGroup();
+    this._criarPlataforma(500, 580, 1000, 32);
+    this._criarPlataforma(760, 430, 260, 20);
+    this._criarPlataforma(180, 350, 220, 20);
+    this._criarPlataforma(500, 240, 200, 20);
+
+    this.paredes = this.physics.add.staticGroup();
+    this._criarParede(60, 460, 32, 240);
+    this._criarParede(940, 460, 32, 240);
+
+    // pontos de ancoragem para a teia
+    this.ancoras = [
+      { x: 400, y: 120 },
+      { x: 650, y: 90 },
+      { x: 850, y: 220 },
+    ];
+    for (const a of this.ancoras) this.add.image(a.x, a.y, "ancora");
+
+    // --- Jogador (sprite real + animações registradas dentro do controller) ---
+    this.jogador = new QUIMERA_PlayerController(this, 120, 480, {
+      gerenciadorProgressao: this.gerenciadorProgressao,
+      personagemId: "protagonista",
+      ancoras: this.ancoras,
+      config: { gravidadeCena: GRAVIDADE },
+    });
+
+    this.physics.add.collider(this.jogador.sprite, this.plataformas);
+    this.physics.add.collider(this.jogador.sprite, this.paredes);
+
+    this.cameras.main.setBounds(0, 0, LARGURA, ALTURA);
+    this.physics.world.setBounds(0, 0, LARGURA, ALTURA);
+
+    this.textoEstado = document.getElementById("estado");
+  }
+
+  _criarPlataforma(x, y, largura, altura) {
+    const p = this.add.rectangle(x, y, largura, altura, 0x394152);
+    this.physics.add.existing(p, true);
+    this.plataformas.add(p);
+  }
+
+  _criarParede(x, y, largura, altura) {
+    const p = this.add.rectangle(x, y, largura, altura, 0x4a5468);
+    this.physics.add.existing(p, true);
+    this.paredes.add(p);
+  }
+
+  update(time, delta) {
+    this.jogador.atualizar(delta);
+    if (this.textoEstado) {
+      this.textoEstado.textContent = `estado: ${this.jogador.estado}`;
+    }
+  }
+}
+
+new Phaser.Game({
+  type: Phaser.AUTO,
+  width: LARGURA,
+  height: ALTURA,
+  backgroundColor: "#0b0e14",
+  physics: { default: "arcade", arcade: { gravity: { y: GRAVIDADE }, debug: false } },
+  scene: CenaDemo,
+});
+</script>
+</body>
+</html>
