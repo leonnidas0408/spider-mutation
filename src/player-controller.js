@@ -287,7 +287,9 @@ class PlayerController {
       const dx = novaPosicao.x - posicaoAnterior.x;
       const dy = novaPosicao.y - posicaoAnterior.y;
       const distancia = Math.hypot(dx, dy);
-      const passos = Math.max(1, Math.ceil(distancia / 12));
+      // O corpo é movido manualmente pelo pêndulo. Passos pequenos evitam
+      // que uma plataforma fina fique entre duas posições consecutivas.
+      const passos = Math.max(1, Math.ceil(distancia / 2));
       let colidiu = false;
 
       // O pêndulo move o jogador manualmente. Fazemos subpassos e atualizamos
@@ -297,26 +299,57 @@ class PlayerController {
         this.sprite.setPosition(posicaoAnterior.x + dx * t, posicaoAnterior.y + dy * t);
         this.sprite.body.updateFromGameObject();
 
-        for (const colisores of this.colisores) {
-          if (this.scene.physics.world.collide(this.sprite, colisores)) {
-            colidiu = true;
-            break;
-          }
-        }
+        if (this._trajetoColideComGrupo()) colidiu = true;
         if (colidiu) break;
       }
 
       if (colidiu) {
         // Volta para o último ponto seguro e solta a teia. Assim a plataforma
         // bloqueia o trajeto em vez de deixar o corpo do jogador atravessá-la.
-        this.sprite.body.reset(posicaoAnterior.x, posicaoAnterior.y);
+        this.sprite.setPosition(posicaoAnterior.x, posicaoAnterior.y);
+        this.sprite.body.updateFromGameObject();
         this._soltarTeiaSePresa(false);
+        this.sprite.body.setVelocity(0, 0);
       } else {
         this.olhandoDireita = this.webSwing.velocidadeAngular >= 0;
       }
     }
     this.estado = ESTADOS_JOGADOR.BALANCO_TEIA;
     this.sprite.body.setVelocity(0, 0); // a posição já é definida manualmente pelo pêndulo
+  }
+
+  _trajetoColideComGrupo() {
+    const corpoJogador = this.sprite.body;
+    const retanguloJogador = new Phaser.Geom.Rectangle(
+      corpoJogador.x,
+      corpoJogador.y,
+      corpoJogador.width,
+      corpoJogador.height
+    );
+
+    for (const grupo of this.colisores) {
+      const objetos = grupo && typeof grupo.getChildren === "function"
+        ? grupo.getChildren()
+        : Array.isArray(grupo) ? grupo : [];
+
+      for (const objeto of objetos) {
+        const corpoColisor = objeto && objeto.body;
+        if (!corpoColisor || !corpoColisor.enable) continue;
+
+        const retanguloColisor = new Phaser.Geom.Rectangle(
+          corpoColisor.x,
+          corpoColisor.y,
+          corpoColisor.width,
+          corpoColisor.height
+        );
+
+        // Teste simétrico: bloqueia tanto vindo de cima quanto vindo de baixo.
+        if (Phaser.Geom.Intersects.RectangleToRectangle(retanguloJogador, retanguloColisor)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   _soltarTeiaSePresa(impulsoExtraPulo = false) {
