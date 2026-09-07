@@ -98,6 +98,7 @@ class PlayerController {
     this.scene = scene;
     this.progressao = opcoes.gerenciadorProgressao;
     this.ancoras = opcoes.ancoras || [];
+    this.colisores = opcoes.colisores || [];
     this.personagemId = opcoes.personagemId || "protagonista";
     this.config = { ...CONFIG_PADRAO, ...(opcoes.config || {}) };
 
@@ -282,8 +283,37 @@ class PlayerController {
 
     const novaPosicao = this.webSwing.atualizar(deltaSegundos);
     if (novaPosicao) {
-      this.sprite.setPosition(novaPosicao.x, novaPosicao.y);
-      this.olhandoDireita = this.webSwing.velocidadeAngular >= 0;
+      const posicaoAnterior = { x: this.sprite.x, y: this.sprite.y };
+      const dx = novaPosicao.x - posicaoAnterior.x;
+      const dy = novaPosicao.y - posicaoAnterior.y;
+      const distancia = Math.hypot(dx, dy);
+      const passos = Math.max(1, Math.ceil(distancia / 12));
+      let colidiu = false;
+
+      // O pêndulo move o jogador manualmente. Fazemos subpassos e atualizamos
+      // o corpo em cada um para não atravessar plataformas em alta velocidade.
+      for (let passo = 1; passo <= passos; passo += 1) {
+        const t = passo / passos;
+        this.sprite.setPosition(posicaoAnterior.x + dx * t, posicaoAnterior.y + dy * t);
+        this.sprite.body.updateFromGameObject();
+
+        for (const colisores of this.colisores) {
+          if (this.scene.physics.world.collide(this.sprite, colisores)) {
+            colidiu = true;
+            break;
+          }
+        }
+        if (colidiu) break;
+      }
+
+      if (colidiu) {
+        // Volta para o último ponto seguro e solta a teia. Assim a plataforma
+        // bloqueia o trajeto em vez de deixar o corpo do jogador atravessá-la.
+        this.sprite.body.reset(posicaoAnterior.x, posicaoAnterior.y);
+        this._soltarTeiaSePresa(false);
+      } else {
+        this.olhandoDireita = this.webSwing.velocidadeAngular >= 0;
+      }
     }
     this.estado = ESTADOS_JOGADOR.BALANCO_TEIA;
     this.sprite.body.setVelocity(0, 0); // a posição já é definida manualmente pelo pêndulo
@@ -344,6 +374,9 @@ class PlayerController {
       ? window.QUIMERA_chaveFramePersonagem(this.personagemId, pose)
       : null;
     if (chave && this.scene.anims.exists(chave)) {
+      // As poses são texturas de um único frame. setTexture evita que o Phaser
+      // mantenha o frame visual anterior ao entrar no balanço.
+      this.sprite.setTexture(chave);
       this.sprite.anims.play(chave, true);
       this._ultimaPoseAnimacao = pose;
     }
