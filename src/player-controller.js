@@ -296,8 +296,15 @@ class PlayerController {
       // o corpo em cada um para não atravessar plataformas em alta velocidade.
       for (let passo = 1; passo <= passos; passo += 1) {
         const t = passo / passos;
-        this.sprite.setPosition(posicaoAnterior.x + dx * t, posicaoAnterior.y + dy * t);
-        this.sprite.body.updateFromGameObject();
+        const px = posicaoAnterior.x + dx * t;
+        const py = posicaoAnterior.y + dy * t;
+        this.sprite.setPosition(px, py);
+        // reset() só reposiciona o corpo usando o size/offset já configurados
+        // (setSize/setOffset no construtor). updateFromGameObject() reposiciona
+        // *e* recalcula tamanho/offset a partir do sprite exibido — o que
+        // destruía a hitbox pequena que configuramos e deixava a colisão
+        // contra plataformas errada durante o balanço.
+        this.sprite.body.reset(px, py);
 
         if (this._trajetoColideComGrupo()) colidiu = true;
         if (colidiu) break;
@@ -307,7 +314,7 @@ class PlayerController {
         // Volta para o último ponto seguro e solta a teia. Assim a plataforma
         // bloqueia o trajeto em vez de deixar o corpo do jogador atravessá-la.
         this.sprite.setPosition(posicaoAnterior.x, posicaoAnterior.y);
-        this.sprite.body.updateFromGameObject();
+        this.sprite.body.reset(posicaoAnterior.x, posicaoAnterior.y);
         this._soltarTeiaSePresa(false);
         this.sprite.body.setVelocity(0, 0);
       } else {
@@ -410,7 +417,15 @@ class PlayerController {
       // As poses são texturas de um único frame. setTexture evita que o Phaser
       // mantenha o frame visual anterior ao entrar no balanço.
       this.sprite.setTexture(chave);
-      this.sprite.setScale(1);
+      // Cada pose é um canvas grande (ex.: 320x1440) — sempre recalcular a
+      // escala a partir da nova altura do frame. Um setScale(1) fixo aqui
+      // fazia o sprite voltar ao tamanho bruto sempre que a pose mudava
+      // (inclusive ao entrar no balanço da teia), e como updateFromGameObject()
+      // (chamado durante o balanço, abaixo) recalcula a hitbox a partir do
+      // tamanho exibido do sprite, a colisão contra plataformas ficava enorme
+      // e desalinhada — foi isso que deixava atravessar as plataformas.
+      const escala = this.config.alturaAlvoPixels / this.sprite.height;
+      this.sprite.setScale(escala);
       this.sprite.anims.play(chave, true);
       this._ultimaPoseAnimacao = pose;
     }
